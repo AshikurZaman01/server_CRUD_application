@@ -25,6 +25,18 @@ async function run() {
         const DB = client.db('Mongo_Practice');
         const userCollection = DB.collection('users');
 
+        app.get('/api/v1/users', async (req, res) => {
+
+            const users = await userCollection.find().toArray();
+
+            if (!users) {
+                return res.status(404).send({ message: 'Data not found' });
+            }
+            else {
+                return res.send(users);
+            }
+        })
+
         await client.db('admin').command({ ping: 1 });
         console.log('Pinged your deployment. You successfully connected to MongoDB!');
     } finally {
