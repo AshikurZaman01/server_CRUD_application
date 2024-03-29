@@ -25,10 +25,9 @@ async function run() {
         const DB = client.db('Mongo_Practice');
         const userCollection = DB.collection('users');
 
+        // get all data from database
         app.get('/api/v1/users', async (req, res) => {
-
             const users = await userCollection.find().toArray();
-
             if (!users) {
                 return res.status(404).send({ message: 'Data not found' });
             }
