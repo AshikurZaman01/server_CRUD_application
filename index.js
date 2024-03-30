@@ -36,6 +36,20 @@ async function run() {
             }
         })
 
+        // save single data in database
+        app.post('/api/v1/users/createUser', async (req, res) => {
+            const user = req.body;
+            const result = await userCollection.insertOne(user);
+
+            if (!result) {
+                return res.status(404).send({ message: 'Data not found' });
+            }
+            else {
+                return res.send(result);
+            }
+        })
+
+
         await client.db('admin').command({ ping: 1 });
         console.log('Pinged your deployment. You successfully connected to MongoDB!');
     } finally {
