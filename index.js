@@ -25,6 +25,21 @@ async function run() {
         const DB = client.db('Mongo_Practice');
         const userCollection = DB.collection('users');
 
+        // save single data in database
+        app.post('/api/v1/users/createUser', async (req, res) => {
+
+            const user = req.body;
+            const result = await userCollection.insertOne(user);
+
+            if (!result) {
+                return res.status(404).send({ message: 'Data not found' });
+            }
+            else {
+                return res.send(result);
+            }
+
+        })
+
         // get all data from database
         app.get('/api/v1/users', async (req, res) => {
             const users = await userCollection.find().toArray();
@@ -36,18 +51,7 @@ async function run() {
             }
         })
 
-        // save single data in database
-        app.post('/api/v1/users/createUser', async (req, res) => {
-            const user = req.body;
-            const result = await userCollection.insertOne(user);
 
-            if (!result) {
-                return res.status(404).send({ message: 'Data not found' });
-            }
-            else {
-                return res.send(result);
-            }
-        })
 
 
         await client.db('admin').command({ ping: 1 });
