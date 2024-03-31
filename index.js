@@ -25,6 +25,21 @@ async function run() {
         const DB = client.db('Mongo_Practice');
         const userCollection = DB.collection('users');
 
+        // Delete single data in database
+        app.delete('/api/v1/users/deleteUser/:id', async (req, res) => {
+
+            const id = req.params.id;
+            const query = { _id: new ObjectId(id) };
+            const user = await userCollection.deleteOne(query);
+
+            if (!user) {
+                return res.status(404).send({ message: 'Data not found' });
+            } else {
+                return res.send(user);
+            }
+
+        })
+
         // save single data in database
         app.post('/api/v1/users/createUser', async (req, res) => {
 
